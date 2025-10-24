@@ -5,6 +5,7 @@ import com.abdelrahmansherif207.taskmanager.dto.task.TaskResponseDto;
 import com.abdelrahmansherif207.taskmanager.dto.task.UpdateTaskDto;
 import com.abdelrahmansherif207.taskmanager.entity.Task;
 import com.abdelrahmansherif207.taskmanager.entity.User;
+import com.abdelrahmansherif207.taskmanager.exception.TaskAccessDeniedException;
 import com.abdelrahmansherif207.taskmanager.exception.TaskNotFoundException;
 import com.abdelrahmansherif207.taskmanager.repository.TaskRepository;
 import jakarta.validation.Valid;

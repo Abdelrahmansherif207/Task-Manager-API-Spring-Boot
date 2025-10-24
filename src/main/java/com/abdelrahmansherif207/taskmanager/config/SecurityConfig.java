@@ -38,8 +38,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/auth/**",
-                    "/h2-console/**"
-                ).permitAll()
+                    "/h2-console/**",
+                        "/error"
+                    ).permitAll()
                 .requestMatchers("/tasks/**").authenticated()
                 .anyRequest().authenticated()
             )

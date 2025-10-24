@@ -39,6 +39,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    @ExceptionHandler(TaskAccessDeniedException.class)
+    public ResponseEntity<Map<String, Object>> handleTaskAccessDeniedException(
+            TaskAccessDeniedException ex,
+            WebRequest request
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.FORBIDDEN.value());
+        response.put("error", "Access Denied");
+        response.put("message", ex.getMessage());
+        response.put("path", request.getDescription(false));
+        
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
     @ExceptionHandler({BadCredentialsException.class, InvalidCredentialsException.class})
     public ResponseEntity<Map<String, Object>> handleBadCredentialsException(
             RuntimeException ex,
@@ -110,9 +125,6 @@ public class GlobalExceptionHandler {
         response.put("error", "Internal Server Error");
         response.put("message", "An unexpected error occurred");
         response.put("path", request.getDescription(false));
-        
-        // In a real application, you might want to log the actual error
-        // logger.error("Unexpected error", ex);
         
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }

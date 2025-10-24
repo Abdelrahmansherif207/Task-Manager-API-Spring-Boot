@@ -75,8 +75,14 @@ public class TaskService {
 
     private Task getTaskForCurrentUser(Long taskId) {
         User currentUser = getCurrentUser();
-        return taskRepository.findByIdAndUser(taskId, currentUser)
-                .orElseThrow(() -> new TaskNotFoundException("Task not found or you don't have access to it"));
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + taskId));
+        
+        if (!task.getUser().getId().equals(currentUser.getId())) {
+            throw new TaskAccessDeniedException("Access Denied!");
+        }
+        
+        return task;
     }
 
     private User getCurrentUser() {

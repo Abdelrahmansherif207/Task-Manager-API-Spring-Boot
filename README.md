@@ -2,6 +2,10 @@
 
 A robust REST API for task management built with Spring Boot. This application provides user authentication and task management functionality with proper error handling and security measures.
 
+## Postman Collection
+
+For testing the API endpoints, you can import this Postman collection:
+[Task Manager API Collection](https://drive.google.com/file/d/1Tmsc06oVooEitc71Yz8PwCtRo3cvfB0f/view?usp=sharing)
 ## Features
 
 ### Authentication
@@ -174,11 +178,6 @@ Example error response:
 }
 ```
 
-## Postman Collection
-
-For testing the API endpoints, you can import this Postman collection:
-[Task Manager API Collection](https://.postman.co/workspace/My-Workspace~941cd4ae-3b33-47d8-8be4-e377ae7b6c68/collection/33329821-f9bd0e46-9ac2-4a32-b23b-a373355674d1?action=share&creator=33329821)
-
 ## Security Measures
 
 - JWT-based authentication
@@ -188,18 +187,6 @@ For testing the API endpoints, you can import this Postman collection:
 - CORS configuration
 - Protected endpoints
 - Email verification
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Author
 

@@ -20,13 +20,13 @@ import java.util.List;
 public class TaskController {
     private final TaskService taskService;
 
-    @PostMapping
+    @PostMapping({"","/"})
     public ResponseEntity<TaskResponseDto> createTask(@Valid @RequestBody CreateTaskDto dto) {
         TaskResponseDto createdTask = taskService.createTask(dto);
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping({"","/"})
     public ResponseEntity<List<TaskResponseDto>> getAllUserTasks() {
         List<TaskResponseDto> tasks = taskService.getAllUserTasks();
         return ResponseEntity.ok(tasks);

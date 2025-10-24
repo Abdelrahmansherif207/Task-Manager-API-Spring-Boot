@@ -4,10 +4,14 @@ import com.abdelrahmansherif207.taskmanager.dto.auth.LoginUserDto;
 import com.abdelrahmansherif207.taskmanager.dto.auth.RegisterUserDto;
 import com.abdelrahmansherif207.taskmanager.dto.auth.VerifyUserDto;
 import com.abdelrahmansherif207.taskmanager.entity.User;
+import com.abdelrahmansherif207.taskmanager.exception.EmailAlreadyExistsException;
+import com.abdelrahmansherif207.taskmanager.exception.InvalidCredentialsException;
 import com.abdelrahmansherif207.taskmanager.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +45,7 @@ public class AuthService {
     public User signup(RegisterUserDto dto) {
         // Check if email already exists
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already in use!");
+            throw new EmailAlreadyExistsException("Email " + dto.getEmail() + " is already registered");
         }
 
         // Create new user
@@ -80,19 +84,24 @@ public class AuthService {
 
     // Login
     public User login (LoginUserDto dto) {
-        User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found!"));
+        try {
+            User user = userRepository.findByEmail(dto.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("No user found with email: " + dto.getEmail()));
 
-        if (!user.isEnabled()) {
-            throw new RuntimeException("Account not verified. Please verify your email.");
+            if (!user.isEnabled()) {
+                throw new InvalidCredentialsException("Account not verified. Please verify your email.");
+            }
+
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            dto.getEmail(),
+                            dto.getPassword()
+                    )
+            );
+            return user;
+        } catch (BadCredentialsException e) {
+            throw new InvalidCredentialsException("Invalid email or password");
         }
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        dto.getEmail(),
-                        dto.getPassword()
-                )
-        );
-        return user;
     }
 
     // Verify user

@@ -8,6 +8,7 @@ import com.abdelrahmansherif207.taskmanager.responses.LoginResponse;
 import com.abdelrahmansherif207.taskmanager.service.AuthService;
 import com.abdelrahmansherif207.taskmanager.service.JwtService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,5 +58,11 @@ public class AuthController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok().build();
     }
 }
